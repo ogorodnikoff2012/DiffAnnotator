@@ -1,6 +1,7 @@
 {
   "name": "diff-annotator",
   "version": "0.1.0",
+  "homepage": "https://ogorodnikoff2012.github.io/DiffAnnotator",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.1",
