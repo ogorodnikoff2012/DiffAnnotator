@@ -286,7 +286,7 @@ function App() {
                 </div>
                 <Form className="d-flex">
                     <Form.Group controlId="inputFile">
-                        <Form.Label>Your .diff file:</Form.Label>
+                        <Form.Label>Your .diff or .json file:</Form.Label>
                         <Form.Control type="file" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             const inputNode = e.target;
                             if (!inputNode.files || inputNode.files.length === 0) {
@@ -344,7 +344,6 @@ function App() {
                         addLabel();
                     }}>
                         <Form.Group controlId="addNewLabel" className="input-group">
-                            {/*<span className="input-group-text">New label</span>*/}
                             <Form.Control type="text" value={newLabel}
                                           onChange={(e) => setNewLabel(e.target.value)}
                                           placeholder="New label"
