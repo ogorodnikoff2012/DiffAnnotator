@@ -252,10 +252,12 @@ function App() {
                 map.set(uuid, new Map());
             }
             const innerMap = map.get(uuid) as Map<string, ParsedDiff>;
-            if (!innerMap.has(fileDiff.oldFileName as string)) {
-                innerMap.set(fileDiff.oldFileName as string, {...fileDiff, hunks: []});
+            const {oldFileName, newFileName} = fileDiff;
+            const key = JSON.stringify([oldFileName, newFileName]);
+            if (!innerMap.has(key)) {
+                innerMap.set(key, {...fileDiff, hunks: []});
             }
-            const syntheticDiff = innerMap.get(fileDiff.oldFileName as string) as ParsedDiff;
+            const syntheticDiff = innerMap.get(key) as ParsedDiff;
             syntheticDiff.hunks.push(hunk);
         }));
 
@@ -329,7 +331,7 @@ function App() {
                             .filter(hunk => labelFilter.size === 0 || !hunkMap.has(hunk) || labelFilter.has(hunkMap.get(hunk) as UUID))
                             .map(hunk =>
                                 <HunkView
-                                    key={`${fileDiff.oldFileName}_${hunk.oldStart}`}
+                                    key={`${fileDiff.oldFileName}_${fileDiff.newFileName}_${hunk.oldStart}`}
                                     fileDiff={fileDiff}
                                     hunk={hunk}
                                     labelMap={labelMap}
