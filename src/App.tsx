@@ -341,7 +341,7 @@ function App() {
                             .reduce((acc, x) => {
                                 console.assert(x.key != null && !acc.keys.has(x.key));
                                 acc.keys.add(x.key as string);
-                                acc.elements.concat(x);
+                                acc.elements.push(x);
                                 return acc;
                             }, {
                                 keys: new Set<string>(),
