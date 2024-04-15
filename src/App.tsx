@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
@@ -13,7 +13,7 @@ import {Hunk, ParsedDiff, parsePatch} from "diff";
 import {NIL, v4 as uuidv4} from "uuid";
 import {useMap} from "usehooks-ts";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPencil, faTrash, faCancel, faSave, faFilter} from "@fortawesome/free-solid-svg-icons";
+import {faCancel, faFilter, faPencil, faSave, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {saveAs} from "file-saver";
 
 type UUID = string & { _uuidBrand: undefined };
@@ -331,13 +331,24 @@ function App() {
                             .filter(hunk => labelFilter.size === 0 || !hunkMap.has(hunk) || labelFilter.has(hunkMap.get(hunk) as UUID))
                             .map(hunk =>
                                 <HunkView
-                                    key={`${fileDiff.oldFileName}_${fileDiff.newFileName}_${hunk.oldStart}`}
+                                    key={`${fileDiff.oldFileName}_${fileDiff.newFileName}_${hunk.oldStart}_${hunkMap.get(hunk)}`}
                                     fileDiff={fileDiff}
                                     hunk={hunk}
                                     labelMap={labelMap}
                                     onLabelChange={onHunkLabelChange}
                                     selectedLabelId={hunkMap.get(hunk)}
-                                />))}
+                                />)
+                            .reduce((acc, x) => {
+                                console.assert(x.key != null && !acc.keys.has(x.key));
+                                acc.keys.add(x.key as string);
+                                acc.elements.concat(x);
+                                return acc;
+                            }, {
+                                keys: new Set<string>(),
+                                elements: [] as JSX.Element[],
+                            })
+                            .elements
+                        )}
                     </Stack>
                 </Col>
                 <Col style={{overflowY: "scroll", height: "calc(100vh - 100px)"}}>
